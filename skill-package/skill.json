@@ -1,0 +1,32 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "pt-BR": {
+          "name": "Controle de Saude",
+          "summary": "Registra glicemia e pressao numa planilha Google Sheets.",
+          "description": "Skill para registrar medicoes de glicemia e pressao arterial diretamente numa planilha do Google Sheets.",
+          "examplePhrases": [
+            "Alexa, abrir controle de saude",
+            "Alexa, pedir para controle de saude registrar minha glicemia",
+            "Alexa, pedir para controle de saude registrar minha pressao"
+          ],
+          "keywords": ["saude", "glicemia", "pressao", "planilha"]
+        }
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "Configurar SPREADSHEET_ID e GOOGLE_CREDENTIALS nas variaveis de ambiente da Lambda antes de testar.",
+      "category": "HEALTH_AND_FITNESS",
+      "distributionCountries": ["BR"]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda"
+        },
+        "interfaces": []
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
