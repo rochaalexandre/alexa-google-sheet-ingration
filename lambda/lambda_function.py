@@ -1,19 +1,22 @@
+import datetime
 import json
 import os
-import datetime
-import gspread
-from google.oauth2.service_account import Credentials
 
-from ask_sdk_core.skill_builder import SkillBuilder
+import gspread
 from ask_sdk_core.dispatch_components import (
     AbstractRequestHandler,
     AbstractExceptionHandler,
 )
+from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_intent_name, is_request_type
-from ask_sdk_core.handler_input import HandlerInput
-from ask_sdk_model import Response
+from google.oauth2.service_account import Credentials
 
-SPREADSHEET_ID = os.environ["SPREADSHEET_ID"]
+try:
+    from config import SPREADSHEET_ID, GOOGLE_CREDENTIALS
+except ImportError:
+    SPREADSHEET_ID = os.environ["SPREADSHEET_ID"]
+    GOOGLE_CREDENTIALS = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
@@ -21,8 +24,7 @@ SCOPES = [
 
 
 def get_sheet(worksheet_name):
-    creds_json = json.loads(os.environ["GOOGLE_CREDENTIALS"])
-    creds = Credentials.from_service_account_info(creds_json, scopes=SCOPES)
+    creds = Credentials.from_service_account_info(GOOGLE_CREDENTIALS, scopes=SCOPES)
     client = gspread.authorize(creds)
     spreadsheet = client.open_by_key(SPREADSHEET_ID)
     return spreadsheet.worksheet(worksheet_name)

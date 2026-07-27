@@ -1,0 +1,11 @@
+SPREADSHEET_ID = "COLE_AQUI_O_ID_DA_PLANILHA"
+
+GOOGLE_CREDENTIALS = {
+    "type": "service_account",
+    "project_id": "...",
+    "private_key_id": "...",
+    "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+    "client_email": "...@....iam.gserviceaccount.com",
+    "client_id": "...",
+    "token_uri": "https://oauth2.googleapis.com/token"
+}
