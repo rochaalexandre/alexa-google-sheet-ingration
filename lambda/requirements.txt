@@ -1,3 +1,2 @@
-ask-sdk-core
-gspread
-google-auth
+ask-sdk-core==1.19.0
+gspread==6.2.1
