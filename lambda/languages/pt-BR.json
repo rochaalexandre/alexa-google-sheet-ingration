@@ -1,0 +1,33 @@
+{
+  "SKILL_NAME": "controle de saúde",
+  "WELCOME": [
+    "Pode registrar sua diabete ou sua pressão."
+  ],
+  "HELP": [
+    "Diga, por exemplo: registrar diabete 120. Ou: registrar pressão 12 por 8."
+  ],
+  "HELP_REPROMPT": [
+    "O que você gostaria de registrar?"
+  ],
+  "FALLBACK": [
+    "Desculpa, não entendi. O que você gostaria de registrar?"
+  ],
+  "FALLBACK_REPROMPT": [
+    "O que você gostaria de registrar?"
+  ],
+  "CANCEL_STOP_RESPONSE": [
+    "Até mais",
+    "Tá bom. Estou aqui se precisar."
+  ],
+  "ERROR": "Desculpa, não consegui registrar. Pode repetir?",
+  "ERROR_REPROMPT": "Pode repetir?",
+  "REGISTRAR_GLICEMIA": [
+    "Registrei sua diabete em {{valor}}."
+  ],
+  "REGISTRAR_GLICEMIA_COM_ORIENTACAO": [
+    "Registrei sua diabete em {{valor}}. {{orientacao}}."
+  ],
+  "REGISTRAR_PRESSAO": [
+    "Registrei sua pressão em {{sistolica}} por {{diastolica}}."
+  ]
+}
