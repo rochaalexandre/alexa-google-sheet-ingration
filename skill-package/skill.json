@@ -7,11 +7,12 @@
           "summary": "Registra glicemia e pressao numa planilha Google Sheets.",
           "description": "Skill para registrar medicoes de glicemia e pressao arterial diretamente numa planilha do Google Sheets.",
           "examplePhrases": [
-            "Alexa, abrir controle de saude",
-            "Alexa, pedir para controle de saude registrar minha glicemia",
+            "Alexa, abrir controle de diabete",
+            "Alexa, abrir controle de pressao",
+            "Alexa, pedir para controle de saude registrar minha diabetes",
             "Alexa, pedir para controle de saude registrar minha pressao"
           ],
-          "keywords": ["saude", "glicemia", "pressao", "planilha"]
+          "keywords": ["saude", "glicemia", "pressao", "planilha", "diabetes","diabete"]
         }
       },
       "isAvailableWorldwide": false,
