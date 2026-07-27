@@ -24,7 +24,7 @@ SCOPES = [
 
 def get_sheet(worksheet_name):
     gc = gspread.service_account_from_dict(GOOGLE_CREDENTIALS)
-    sh = gc.open_by_url(SPREADSHEET_ID)
+    sh = gc.open_by_key(SPREADSHEET_ID)
     return sh.worksheet(worksheet_name)
 
 
