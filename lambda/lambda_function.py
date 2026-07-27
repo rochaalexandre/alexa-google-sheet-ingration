@@ -9,7 +9,6 @@ from ask_sdk_core.dispatch_components import (
 )
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_intent_name, is_request_type
-from google.oauth2.service_account import Credentials
 
 try:
     from config import SPREADSHEET_ID, GOOGLE_CREDENTIALS
@@ -24,10 +23,9 @@ SCOPES = [
 
 
 def get_sheet(worksheet_name):
-    creds = Credentials.from_service_account_info(GOOGLE_CREDENTIALS, scopes=SCOPES)
-    client = gspread.authorize(creds)
-    spreadsheet = client.open_by_key(SPREADSHEET_ID)
-    return spreadsheet.worksheet(worksheet_name)
+    gc = gspread.service_account_from_dict(GOOGLE_CREDENTIALS)
+    sh = gc.open_by_url(SPREADSHEET_ID)
+    return sh.worksheet(worksheet_name)
 
 
 def timestamp():
