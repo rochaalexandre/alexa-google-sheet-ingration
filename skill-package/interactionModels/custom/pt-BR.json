@@ -35,13 +35,11 @@
           "samples": [
             "registrar pressao {sistolica} por {diastolica}",
             "minha pressao ta {sistolica} por {diastolica}",
-            "minha pressao e {sistolica} {diastolica}",
             "pressao {sistolica} por {diastolica}",
-            "pressao {sistolica} {diastolica}",
-            "anotar pressao {sistolica} {diastolica}",
+            "anotar pressao {sistolica} por {diastolica}",
             "deu {sistolica} por {diastolica}",
             "ta {sistolica} por {diastolica}",
-            "minha pressao deu {sistolica} {diastolica}"
+            "minha pressao deu {sistolica} por {diastolica}"
           ]
         }
       ]
