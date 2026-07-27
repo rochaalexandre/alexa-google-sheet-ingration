@@ -33,6 +33,19 @@ def timestamp():
     return now.strftime("%d/%m/%Y"), now.strftime("%H:%M")
 
 
+def buscar_criterio(valor):
+    sheet = get_sheet("Criterios")
+    linhas = sheet.get_all_records()
+
+    valor_numerico = float(valor)
+    for linha in linhas:
+        minimo = float(linha["min"])
+        maximo = float(linha["max"])
+        if minimo <= valor_numerico <= maximo:
+            return linha
+    return None
+
+
 class LaunchRequestHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         return is_request_type("LaunchRequest")(handler_input)
@@ -58,7 +71,13 @@ class RegistrarGlicemiaHandler(AbstractRequestHandler):
         sheet = get_sheet("Diabete")
         sheet.append_row([data, hora, valor])
 
-        speak_output = f"Registrei sua diabete em {valor}."
+        criterio = buscar_criterio(valor)
+        if criterio is None:
+            speak_output = f"Registrei sua diabete em {valor}."
+        else:
+            orientacao = criterio["orientacao"]
+            speak_output = f"Registrei sua diabete em {valor}. {orientacao}."
+
         return handler_input.response_builder.speak(speak_output).response
 
 
