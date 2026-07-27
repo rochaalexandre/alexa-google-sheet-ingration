@@ -1,0 +1,50 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "controle de saude",
+      "intents": [
+        {"name": "AMAZON.CancelIntent", "samples": []},
+        {"name": "AMAZON.HelpIntent", "samples": []},
+        {"name": "AMAZON.StopIntent", "samples": []},
+        {"name": "AMAZON.NavigateHomeIntent", "samples": []},
+        {
+          "name": "RegistrarGlicemia",
+          "slots": [{"name": "valor", "type": "AMAZON.NUMBER"}],
+          "samples": [
+            "registrar diabetes {valor}",
+            "registrar diabete {valor}",
+            "minha diabete ta {valor}",
+            "minha diabetes ta {valor}",
+            "minha diabete e {valor}",
+            "anotar diabete {valor}",
+            "diabete {valor}",
+            "diabetes {valor}",
+            "ta {valor} de diabete",
+            "deu {valor} de diabete",
+            "diabete deu {valor}",
+            "minha glicemia ta {valor}",
+            "glicemia {valor}"
+          ]
+        },
+        {
+          "name": "RegistrarPressao",
+          "slots": [
+            {"name": "sistolica", "type": "AMAZON.NUMBER"},
+            {"name": "diastolica", "type": "AMAZON.NUMBER"}
+          ],
+          "samples": [
+            "registrar pressao {sistolica} por {diastolica}",
+            "minha pressao ta {sistolica} por {diastolica}",
+            "minha pressao e {sistolica} {diastolica}",
+            "pressao {sistolica} por {diastolica}",
+            "pressao {sistolica} {diastolica}",
+            "anotar pressao {sistolica} {diastolica}",
+            "deu {sistolica} por {diastolica}",
+            "ta {sistolica} por {diastolica}",
+            "minha pressao deu {sistolica} {diastolica}"
+          ]
+        }
+      ]
+    }
+  }
+}
