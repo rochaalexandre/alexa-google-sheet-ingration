@@ -1,14 +1,23 @@
 import datetime
 import json
+import logging
 import os
 
 import gspread
+import pytz
 from ask_sdk_core.dispatch_components import (
     AbstractRequestHandler,
     AbstractExceptionHandler,
+    AbstractRequestInterceptor,
+    AbstractResponseInterceptor,
 )
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_intent_name, is_request_type
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+TIMEZONE_PADRAO = "America/Sao_Paulo"
 
 try:
     from config import SPREADSHEET_ID, GOOGLE_CREDENTIALS
@@ -23,17 +32,22 @@ SCOPES = [
 
 
 def get_sheet(worksheet_name):
+    logger.info("Autenticando no Google Sheets e abrindo a aba '%s'", worksheet_name)
     gc = gspread.service_account_from_dict(GOOGLE_CREDENTIALS)
     sh = gc.open_by_key(SPREADSHEET_ID)
     return sh.worksheet(worksheet_name)
 
 
-def timestamp():
-    now = datetime.datetime.now()
-    return now.strftime("%d/%m/%Y"), now.strftime("%H:%M")
+def timestamp(timezone_name=TIMEZONE_PADRAO):
+    tz = pytz.timezone(timezone_name)
+    now = datetime.datetime.now(pytz.utc).astimezone(tz)
+    data, hora = now.strftime("%d/%m/%Y"), now.strftime("%H:%M")
+    logger.info("Hora calculada para timezone=%s: data=%s hora=%s", timezone_name, data, hora)
+    return data, hora
 
 
 def buscar_criterio(valor):
+    logger.info("Buscando criterio para valor=%s", valor)
     sheet = get_sheet("Criterios")
     linhas = sheet.get_all_records()
 
@@ -66,10 +80,12 @@ class RegistrarGlicemiaHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
         valor = slots["valor"].value
+        logger.info("RegistrarGlicemia recebido: valor=%s", valor)
 
         data, hora = timestamp()
         sheet = get_sheet("Diabete")
         sheet.append_row([data, hora, valor])
+        logger.info("Linha gravada na aba Diabete: %s", [data, hora, valor])
 
         criterio = buscar_criterio(valor)
         if criterio is None:
@@ -89,10 +105,12 @@ class RegistrarPressaoHandler(AbstractRequestHandler):
         slots = handler_input.request_envelope.request.intent.slots
         sistolica = slots["sistolica"].value
         diastolica = slots["diastolica"].value
+        logger.info("RegistrarPressao recebido: sistolica=%s diastolica=%s", sistolica, diastolica)
 
         data, hora = timestamp()
         sheet = get_sheet("Pressao")
         sheet.append_row([data, hora, sistolica, diastolica])
+        logger.info("Linha gravada na aba Pressao: %s", [data, hora, sistolica, diastolica])
 
         speak_output = f"Registrei sua pressão em {sistolica} por {diastolica}."
         return handler_input.response_builder.speak(speak_output).response
@@ -135,12 +153,23 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         return True
 
     def handle(self, handler_input, exception):
+        logger.error("Erro nao tratado: %s", exception, exc_info=True)
         speak_output = "Desculpa, não consegui registrar. Pode repetir?"
         return (
             handler_input.response_builder.speak(speak_output)
             .ask(speak_output)
             .response
         )
+
+
+class RequestLogger(AbstractRequestInterceptor):
+    def process(self, handler_input):
+        logger.info("Request recebido: %s", handler_input.request_envelope.request)
+
+
+class ResponseLogger(AbstractResponseInterceptor):
+    def process(self, handler_input, response):
+        logger.info("Response enviado: %s", response)
 
 
 sb = SkillBuilder()
@@ -151,5 +180,7 @@ sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
+sb.add_global_request_interceptor(RequestLogger())
+sb.add_global_response_interceptor(ResponseLogger())
 
-handler = sb.lambda_handler()
+lambda_handler = sb.lambda_handler()

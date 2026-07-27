@@ -98,6 +98,19 @@ def test_buscar_criterio_retorna_none_fora_das_faixas():
     assert resultado is None
 
 
+def test_timestamp_usa_fuso_horario_informado():
+    import datetime
+    import pytz
+
+    fixo = datetime.datetime(2026, 7, 27, 23, 30, tzinfo=pytz.utc)
+    with patch("lambda_function.datetime") as mock_datetime:
+        mock_datetime.datetime.now.return_value = fixo
+        data, hora = lf.timestamp("America/Sao_Paulo")
+
+    assert hora == "20:30"
+    assert data == "27/07/2026"
+
+
 @patch("lambda_function.timestamp", return_value=("27/07/2026", "10:00"))
 @patch("lambda_function.get_sheet")
 def test_registrar_pressao_grava_linha_correta(mock_get_sheet, mock_timestamp):
