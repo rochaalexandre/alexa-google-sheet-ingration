@@ -75,7 +75,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        speak_output = "Pode registrar sua diabete ou sua pressão."
+        speak_output = "O que você gostaria de registrar sua diabete ou sua pressão."
         return (
             handler_input.response_builder.speak(speak_output)
             .ask(speak_output)
@@ -112,10 +112,12 @@ class RegistrarPressaoHandler(AbstractRequestHandler):
         return is_intent_name("RegistrarPressao")(handler_input)
 
     def handle(self, handler_input):
-        slots = handler_input.request_envelope.request.intent.slots
+        request = handler_input.request_envelope.request
+
+        slots = request.intent.slots
         sistolica = slots["sistolica"].value
         diastolica = slots["diastolica"].value
-        logger.debug("RegistrarPressao recebido: sistolica=%s diastolica=%s", sistolica, diastolica)
+        logger.info("RegistrarPressao recebido: sistolica=%s diastolica=%s", sistolica, diastolica)
 
         data, hora = timestamp()
         sheet = get_sheet("Pressao")

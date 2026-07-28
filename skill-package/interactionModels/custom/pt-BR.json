@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "diario de saude",
+      "invocationName": "anotar saude",
       "intents": [
         {"name": "AMAZON.CancelIntent", "samples": []},
         {"name": "AMAZON.HelpIntent", "samples": []},
@@ -29,20 +29,83 @@
         {
           "name": "RegistrarPressao",
           "slots": [
-            {"name": "sistolica", "type": "AMAZON.NUMBER"},
-            {"name": "diastolica", "type": "AMAZON.NUMBER"}
+            {
+              "name": "sistolica",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{sistolica}"
+              ]
+            },
+            {
+              "name": "diastolica",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{diastolica}"
+              ]
+            }
           ],
           "samples": [
+            "registrar pressao",
+            "minha pressao",
+            "pressao",
+            "anotar pressao",
             "registrar pressao {sistolica} por {diastolica}",
-            "minha pressao ta {sistolica} por {diastolica}",
-            "pressao {sistolica} por {diastolica}",
-            "anotar pressao {sistolica} por {diastolica}",
-            "deu {sistolica} por {diastolica}",
-            "ta {sistolica} por {diastolica}",
-            "minha pressao deu {sistolica} por {diastolica}"
+            "pressao {sistolica} por {diastolica}"
           ]
         }
-      ]
-    }
+      ],
+      "types": []
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "RegistrarPressao",
+          "delegationStrategy": "ALWAYS",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "sistolica",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.RegistrarPressao.sistolica"
+              }
+            },
+            {
+              "name": "diastolica",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.RegistrarPressao.diastolica"
+              }
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "SKILL_RESPONSE"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.RegistrarPressao.sistolica",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Quanto deu a pressão alta?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.RegistrarPressao.diastolica",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "E a pressão baixa, quanto deu?"
+          }
+        ]
+      }
+    ]
   }
 }
