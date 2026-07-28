@@ -141,6 +141,19 @@ class HelpIntentHandler(AbstractRequestHandler):
         )
 
 
+class FallbackIntentHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        return is_intent_name("AMAZON.FallbackIntent")(handler_input)
+
+    def handle(self, handler_input):
+        speak_output = "Não entendi. Você pode dizer, por exemplo: registrar diabete 120, ou registrar pressão."
+        return (
+            handler_input.response_builder.speak(speak_output)
+            .ask(speak_output)
+            .response
+        )
+
+
 class CancelOrStopIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         return is_intent_name("AMAZON.CancelIntent")(handler_input) or is_intent_name(
@@ -189,6 +202,7 @@ sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(RegistrarGlicemiaHandler())
 sb.add_request_handler(RegistrarPressaoHandler())
 sb.add_request_handler(HelpIntentHandler())
+sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
