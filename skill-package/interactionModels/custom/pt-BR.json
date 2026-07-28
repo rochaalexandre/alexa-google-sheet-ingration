@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "controle de saude",
+      "invocationName": "diario de saude",
       "intents": [
         {"name": "AMAZON.CancelIntent", "samples": []},
         {"name": "AMAZON.HelpIntent", "samples": []},
