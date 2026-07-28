@@ -31,23 +31,33 @@ SCOPES = [
 ]
 
 
+_spreadsheet = None
+
+
+def _get_spreadsheet():
+    global _spreadsheet
+    if _spreadsheet is None:
+        logger.debug("Autenticando no Google Sheets (login unico por execucao da lambda)")
+        gc = gspread.service_account_from_dict(GOOGLE_CREDENTIALS)
+        _spreadsheet = gc.open_by_key(SPREADSHEET_ID)
+    return _spreadsheet
+
+
 def get_sheet(worksheet_name):
-    logger.info("Autenticando no Google Sheets e abrindo a aba '%s'", worksheet_name)
-    gc = gspread.service_account_from_dict(GOOGLE_CREDENTIALS)
-    sh = gc.open_by_key(SPREADSHEET_ID)
-    return sh.worksheet(worksheet_name)
+    logger.debug("Abrindo a aba '%s'", worksheet_name)
+    return _get_spreadsheet().worksheet(worksheet_name)
 
 
 def timestamp(timezone_name=TIMEZONE_PADRAO):
     tz = pytz.timezone(timezone_name)
     now = datetime.datetime.now(pytz.utc).astimezone(tz)
     data, hora = now.strftime("%d/%m/%Y"), now.strftime("%H:%M")
-    logger.info("Hora calculada para timezone=%s: data=%s hora=%s", timezone_name, data, hora)
+    logger.debug("Hora calculada para timezone=%s: data=%s hora=%s", timezone_name, data, hora)
     return data, hora
 
 
 def buscar_criterio(valor):
-    logger.info("Buscando criterio para valor=%s", valor)
+    logger.debug("Buscando criterio para valor=%s", valor)
     sheet = get_sheet("Criterios")
     linhas = sheet.get_all_records()
 
@@ -80,12 +90,12 @@ class RegistrarGlicemiaHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
         valor = slots["valor"].value
-        logger.info("RegistrarGlicemia recebido: valor=%s", valor)
+        logger.debug("RegistrarGlicemia recebido: valor=%s", valor)
 
         data, hora = timestamp()
         sheet = get_sheet("Diabete")
         sheet.append_row([data, hora, valor])
-        logger.info("Linha gravada na aba Diabete: %s", [data, hora, valor])
+        logger.debug("Linha gravada na aba Diabete: %s", [data, hora, valor])
 
         criterio = buscar_criterio(valor)
         if criterio is None:
@@ -105,12 +115,12 @@ class RegistrarPressaoHandler(AbstractRequestHandler):
         slots = handler_input.request_envelope.request.intent.slots
         sistolica = slots["sistolica"].value
         diastolica = slots["diastolica"].value
-        logger.info("RegistrarPressao recebido: sistolica=%s diastolica=%s", sistolica, diastolica)
+        logger.debug("RegistrarPressao recebido: sistolica=%s diastolica=%s", sistolica, diastolica)
 
         data, hora = timestamp()
         sheet = get_sheet("Pressao")
         sheet.append_row([data, hora, sistolica, diastolica])
-        logger.info("Linha gravada na aba Pressao: %s", [data, hora, sistolica, diastolica])
+        logger.debug("Linha gravada na aba Pressao: %s", [data, hora, sistolica, diastolica])
 
         speak_output = f"Registrei sua pressão em {sistolica} por {diastolica}."
         return handler_input.response_builder.speak(speak_output).response
@@ -181,6 +191,6 @@ sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 sb.add_global_request_interceptor(RequestLogger())
-sb.add_global_response_interceptor(ResponseLogger())
+# sb.add_global_response_interceptor(ResponseLogger())  # habilitar quando precisar depurar responses
 
 lambda_handler = sb.lambda_handler()
