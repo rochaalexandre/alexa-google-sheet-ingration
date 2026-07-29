@@ -1,16 +1,36 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "anotar saude",
+      "invocationName": "anotar saúde",
       "intents": [
-        {"name": "AMAZON.CancelIntent", "samples": []},
-        {"name": "AMAZON.HelpIntent", "samples": []},
-        {"name": "AMAZON.StopIntent", "samples": []},
-        {"name": "AMAZON.NavigateHomeIntent", "samples": []},
-        {"name": "AMAZON.FallbackIntent", "samples": []},
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
         {
           "name": "RegistrarGlicemia",
-          "slots": [{"name": "valor", "type": "AMAZON.NUMBER"}],
+          "slots": [
+            {
+              "name": "valor",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
           "samples": [
             "registrar diabetes {valor}",
             "registrar diabete {valor}",
@@ -32,26 +52,23 @@
           "slots": [
             {
               "name": "sistolica",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "{sistolica}"
-              ]
+              "type": "AMAZON.NUMBER"
             },
             {
               "name": "diastolica",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "{diastolica}"
-              ]
+              "type": "AMAZON.NUMBER"
             }
           ],
           "samples": [
-            "registrar pressao",
-            "minha pressao",
-            "pressao",
-            "anotar pressao",
-            "registrar pressao {sistolica} por {diastolica}",
-            "pressao {sistolica} por {diastolica}"
+            "anota pressão",
+            "anotar pressão",
+            "registrar pressão",
+            "anotar minha pressão",
+            "registrar minha pressão",
+            "minha pressão deu {sistolica} por {diastolica}",
+            "pressão {sistolica} por {diastolica}",
+            "pressão arterial {sistolica} por {diastolica}",
+            "anotar pressão {sistolica} por {diastolica}"
           ]
         }
       ],
@@ -71,7 +88,7 @@
               "confirmationRequired": false,
               "elicitationRequired": true,
               "prompts": {
-                "elicitation": "Elicit.Slot.RegistrarPressao.sistolica"
+                "elicitation": "Elicitation.Sistolica"
               }
             },
             {
@@ -80,7 +97,7 @@
               "confirmationRequired": false,
               "elicitationRequired": true,
               "prompts": {
-                "elicitation": "Elicit.Slot.RegistrarPressao.diastolica"
+                "elicitation": "Elicitation.Diastolica"
               }
             }
           ]
@@ -90,20 +107,20 @@
     },
     "prompts": [
       {
-        "id": "Elicit.Slot.RegistrarPressao.sistolica",
+        "id": "Elicitation.Sistolica",
         "variations": [
           {
             "type": "PlainText",
-            "value": "Quanto deu a pressão alta?"
+            "value": "Qual foi o valor da pressão alta?"
           }
         ]
       },
       {
-        "id": "Elicit.Slot.RegistrarPressao.diastolica",
+        "id": "Elicitation.Diastolica",
         "variations": [
           {
             "type": "PlainText",
-            "value": "E a pressão baixa, quanto deu?"
+            "value": "Qual foi o valor da pressão baixa?"
           }
         ]
       }
