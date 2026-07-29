@@ -27,24 +27,24 @@
           "name": "RegistrarGlicemia",
           "slots": [
             {
-              "name": "valor",
+              "name": "glicemia",
               "type": "AMAZON.NUMBER"
             }
           ],
           "samples": [
-            "registrar diabetes {valor}",
-            "registrar diabete {valor}",
-            "minha diabete ta {valor}",
-            "minha diabetes ta {valor}",
-            "minha diabete e {valor}",
-            "anotar diabete {valor}",
-            "diabete {valor}",
-            "diabetes {valor}",
-            "ta {valor} de diabete",
-            "deu {valor} de diabete",
-            "diabete deu {valor}",
-            "minha glicemia ta {valor}",
-            "glicemia {valor}"
+            "registrar diabetes {glicemia}",
+            "registrar diabete {glicemia}",
+            "minha diabete ta {glicemia}",
+            "minha diabetes ta {glicemia}",
+            "minha diabete e {glicemia}",
+            "anotar diabete {glicemia}",
+            "diabete {glicemia}",
+            "diabetes {glicemia}",
+            "ta {glicemia} de diabete",
+            "deu {glicemia} de diabete",
+            "diabete deu {glicemia}",
+            "minha glicemia ta {glicemia}",
+            "glicemia {glicemia}"
           ]
         },
         {
@@ -68,19 +68,36 @@
             "minha pressão deu {sistolica} por {diastolica}",
             "pressão {sistolica} por {diastolica}",
             "pressão arterial {sistolica} por {diastolica}",
-            "anotar pressão {sistolica} por {diastolica}"
+            "anotar pressão {sistolica} por {diastolica}",
+            "minha pressão alta deu {sistolica} e baixa {diastolica}",
+            "pressão alta {sistolica} e baixa {diastolica}",
+            "alta {sistolica} e baixa {diastolica}"
           ]
         }
       ],
       "types": []
     },
     "dialog": {
+      "delegationStrategy": "SKILL_RESPONSE",
       "intents": [
+        {
+          "name": "RegistrarGlicemia",
+          "delegationStrategy": "ALWAYS",
+          "slots": [
+            {
+              "name": "glicemia",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicitation.Glicemia"
+              }
+            }
+          ]
+        },
         {
           "name": "RegistrarPressao",
           "delegationStrategy": "ALWAYS",
-          "confirmationRequired": false,
-          "prompts": {},
           "slots": [
             {
               "name": "sistolica",
@@ -102,10 +119,18 @@
             }
           ]
         }
-      ],
-      "delegationStrategy": "SKILL_RESPONSE"
+      ]
     },
     "prompts": [
+      {
+        "id": "Elicitation.Glicemia",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Qual foi o valor da diabete?"
+          }
+        ]
+      },
       {
         "id": "Elicitation.Sistolica",
         "variations": [

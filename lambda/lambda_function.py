@@ -89,20 +89,20 @@ class RegistrarGlicemiaHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
-        valor = slots["valor"].value
-        logger.debug("RegistrarGlicemia recebido: valor=%s", valor)
+        glicemia = slots["glicemia"].value
+        logger.debug("RegistrarGlicemia recebido: glicemia=%s", glicemia)
 
         data, hora = timestamp()
         sheet = get_sheet("Diabete")
-        sheet.append_row([data, hora, valor])
-        logger.debug("Linha gravada na aba Diabete: %s", [data, hora, valor])
+        sheet.append_row([data, hora, glicemia])
+        logger.debug("Linha gravada na aba Diabete: %s", [data, hora, glicemia])
 
-        criterio = buscar_criterio(valor)
+        criterio = buscar_criterio(glicemia)
         if criterio is None:
-            speak_output = f"Registrei sua diabete em {valor}."
+            speak_output = f"Registrei sua diabete em {glicemia}."
         else:
             orientacao = criterio["orientacao"]
-            speak_output = f"Registrei sua diabete em {valor}. {orientacao}."
+            speak_output = f"Registrei sua diabete em {glicemia}. {orientacao}."
 
         return handler_input.response_builder.speak(speak_output).response
 
