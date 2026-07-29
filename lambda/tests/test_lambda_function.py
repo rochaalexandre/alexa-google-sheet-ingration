@@ -39,7 +39,7 @@ def test_registrar_glicemia_grava_linha_correta(mock_get_sheet, mock_timestamp):
 
     mock_get_sheet.side_effect = fake_get_sheet
 
-    handler_input = make_handler_input({"valor": "220"})
+    handler_input = make_handler_input({"glicemia": "220"})
     handler = lf.RegistrarGlicemiaHandler()
 
     handler.handle(handler_input)
@@ -63,7 +63,7 @@ def test_registrar_glicemia_sem_comentario_quando_dentro_do_normal(mock_get_shee
 
     mock_get_sheet.side_effect = fake_get_sheet
 
-    handler_input = make_handler_input({"valor": "180"})
+    handler_input = make_handler_input({"glicemia": "180"})
     handler = lf.RegistrarGlicemiaHandler()
 
     handler.handle(handler_input)
@@ -132,7 +132,7 @@ def test_registrar_pressao_grava_linha_correta(mock_get_sheet, mock_timestamp):
 def test_registrar_glicemia_propaga_erro_se_sheet_falhar(mock_get_sheet):
     mock_get_sheet.side_effect = Exception("falha de conexao")
 
-    handler_input = make_handler_input({"valor": "120"})
+    handler_input = make_handler_input({"glicemia": "120"})
     handler = lf.RegistrarGlicemiaHandler()
 
     with pytest.raises(Exception):
